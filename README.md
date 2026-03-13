@@ -1,5 +1,11 @@
 # Automatyzacja wdrożenia forum phpBB3 w chmurze Azure
 
+## Autorzy
+
+* Michał Antosiewicz
+* Michał Ciesielczyk
+
+
 ## Opis projektu
 
 Projekt polega na automatycznym wdrożeniu kompletnego środowiska serwerowego oraz aplikacji forum internetowego **phpBB3** na maszynie wirtualnej w chmurze Microsoft Azure.
@@ -72,14 +78,38 @@ http://ADRES_IP_SERWERA/phpBB3/install
 Następnie postępuj zgodnie z instrukcjami instalatora graficznego, podając dane bazy danych zdefiniowane w `playbook.yml`.
 
 ---
+## O aplikacji
 
-## Uwagi końcowe
+Wdrożona aplikacja **phpBB3** to klasyczne forum internetowe umożliwiające komunikację użytkowników w formie wątków dyskusyjnych.
+Użytkownicy mogą zakładać nowe tematy, dodawać posty oraz odpowiadać na istniejące dyskusje w formie komentarzy.
+![alt text](<Zrzut ekranu 2026-03-13 135102.png>)
+![alt text](<Zrzut ekranu 2026-03-13 135034.png>)
 
-Po zakończeniu instalacji, ze względów bezpieczeństwa, zaleca się **usunięcie katalogu instalacyjnego** z serwera.
 
 ---
 
-## Autorzy:
-* Michał Antosiewicz
-* Michał Ciesielczyk
+
+## Test działania na prezentacji
+
+Podczas prezentacji projektu zostało przetestowane poprawne działanie automatyzacji przy użyciu narzędzia **Ansible**.
+W ramach demonstracji wykonano ponowne uruchomienie playbooka (utworzono nowego użytkownika forum o nazwie **patryk**) oraz potwierdzono prawidłową konfigurację środowiska serwerowego.
+
+![alt text](<Zrzut ekranu 2026-03-13 135437.png>)
+![alt text](<Zrzut ekranu 2026-03-13 135634.png>)
+![alt text](<Zrzut ekranu 2026-03-13 134959.png>)
+
+---
+
+
+## Przygotowanie środowiska
+
+Przed rozpoczęciem procesu automatyzacji konieczne było utworzenie maszyny wirtualnej w chmurze Microsoft Azure.
+Na utworzonej instancji zainstalowano system operacyjny Ubuntu Server oraz skonfigurowano podstawowe ustawienia sieciowe i dostęp SSH z wykorzystaniem klucza prywatnego.
+![alt text](<Zrzut ekranu 2026-03-13 135647.png>)
+
+
+---
+
+
+
 
