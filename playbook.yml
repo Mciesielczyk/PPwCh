@@ -36,6 +36,14 @@
         state: present
         login_unix_socket: /var/run/mysqld/mysqld.sock
 
+      mysql_user1:
+        name: Michał
+        password: "1234"
+        # Nadanie pełnych uprawnień tylko do konkretnej bazy forum
+        priv: "phpbb_db.*:ALL"
+        state: present
+        login_unix_socket: /var/run/mysqld/mysqld.sock
+
     # (CMS)
     - name: Pobranie plikow źródłowych phpBB3
       command: wget https://download.phpbb.com/pub/release/3.3/3.3.11/phpBB-3.3.11.zip -O /tmp/phpbb.zip
@@ -46,7 +54,7 @@
     - name: Rozpakowanie archiwum do katalogu serwera WWW
       unarchive:
         src: /tmp/phpbb.zip
-        dest: /var/www/html/
+        dest: /home/azureuser
         remote_src: yes
 
     - name: Ustawienie uprawnien wlasnosci dla Apache
