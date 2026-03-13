@@ -1,67 +1,74 @@
-
+---
 - name: Instalacja forum phpBB3 (LAMP Stack)
   hosts: all
-  # Uruchomienie z uprawnieniami roota (odpowiednik sudo)
   become: yes
-  
+
   tasks:
     - name: Aktualizacja cache i instalacja pakietów LAMP
       apt:
         name:
-          - apache2           # Serwer WWW
-          - mysql-server      # Silnik bazy danych
-          - php               # Interpreter języka PHP
-          - libapache2-mod-php # Moduł łączący PHP z Apache
-          - php-mysql         # Obsługa MySQL przez PHP
-          - php-xml           # Moduł PHP do obsługi plików XML
-          - php-gd            # Moduł PHP do przetwarzania obrazów
-          - php-mbstring      # Obsługa kodowania znaków (np. polskie znaki)
-          - unzip             # Narzędzie do rozpakowania plików ZIP
+          - apache2
+          - mysql-server
+          - php
+          - libapache2-mod-php
+          - php-mysql
+          - php-xml
+          - php-gd
+          - php-mbstring
+          - unzip
+          - python3-mysqldb  # Dodatkowy pakiet potrzebny Ansible do rozmowy z MySQL
         state: present
-        update_cache: yes      # Odpowiednik 'apt update' przed instalacją
+        update_cache: yes
 
     - name: Utworzenie bazy danych MySQL
       mysql_db:
         name: phpbb_db
         state: present
-        # Użycie socketu pozwala na dostęp bez hasła roota z poziomu systemu
         login_unix_socket: /var/run/mysqld/mysqld.sock
 
-    - name: Utworzenie uzytkownika bazy danych
+    - name:
       mysql_user:
         name: forum_user
         password: "Haslo_Przykladowe_123!"
-        # Nadanie pełnych uprawnień tylko do konkretnej bazy forum
         priv: "phpbb_db.*:ALL"
         state: present
         login_unix_socket: /var/run/mysqld/mysqld.sock
 
-      mysql_user1:
-        name: Michał
-        password: "1234"
-        # Nadanie pełnych uprawnień tylko do konkretnej bazy forum
+    - name:
+      mysql_user:
+        name: Michal
+        password: "Twoje_Haslo_1234"
         priv: "phpbb_db.*:ALL"
         state: present
         login_unix_socket: /var/run/mysqld/mysqld.sock
 
-    # (CMS)
-    - name: Pobranie plikow źródłowych phpBB3
+    - name:
+      mysql_user:
+        name: Patryk
+        password: "123456"
+        priv: "phpbb_db.*:ALL"
+        state: present
+        login_unix_socket: /var/run/mysqld/mysqld.sock
+
+    - name: Pobranie plikow zrodlowych phpBB3
       command: wget https://download.phpbb.com/pub/release/3.3/3.3.11/phpBB-3.3.11.zip -O /tmp/phpbb.zip
       args:
-        # Zadanie zostanie wykonane tylko, jeśli plik jeszcze nie istnieje
         creates: /tmp/phpbb.zip
 
-    - name: Rozpakowanie archiwum do katalogu serwera WWW
+    - name: Rozpakowanie archiwum
       unarchive:
         src: /tmp/phpbb.zip
-        dest: /home/azureuser
+        dest: /home/azureuser/
         remote_src: yes
+
+    - name: Przeniesienie plikow do katalogu serwera WWW
+      command: cp -r /tmp/phpBB3 /var/www/html/
+      args:
+        creates: /var/www/html/phpBB3
 
     - name: Ustawienie uprawnien wlasnosci dla Apache
       file:
         path: /var/www/html/phpBB3
-        # Ustawienie użytkownika www-data 
         owner: www-data
         group: www-data
-        # Zmiana uprawnień rekurencyjnie dla wszystkich plików i podfolderów
         recurse: yes
